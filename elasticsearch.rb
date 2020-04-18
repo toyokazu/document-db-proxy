@@ -99,7 +99,7 @@ class Elasticsearch < Proxy
       if should_be_denied?(response1.body, "_doc")
         return 403
       end
-      response2 = HTTParty.put(settings.uril + request.path, query: get_params, headers: get_headers, body: get_body)
+      response2 = HTTParty.put(settings.uri + request.path, query: get_params, headers: get_headers, body: get_body)
       [response2.code, response2.headers, response2.body]
     rescue StandardError => e
       error_handler(e)
@@ -164,7 +164,7 @@ class Elasticsearch < Proxy
       if should_be_denied?(response1.body, "_doc")
         return 403
       end
-      response2 = HTTParty.post(settings.uril + request.path, query: get_params, headers: get_headers, body: get_body)
+      response2 = HTTParty.post(settings.uri + request.path, query: get_params, headers: get_headers, body: get_body)
       [response2.code, response2.headers, response2.body]
     rescue StandardError => e
       error_handler(e)
