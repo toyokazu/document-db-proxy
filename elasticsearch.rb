@@ -5,6 +5,7 @@ require File.expand_path '../proxy.rb', __FILE__
 class Elasticsearch < Proxy
   configure :production, :development do
     set :uri, URI.parse("http://localhost:9200")
+    set :owner_attr, "username"
     set :uid_attr, "OIDC_CLAIM_preferred_username"
   end
 
@@ -28,7 +29,7 @@ class Elasticsearch < Proxy
       .flatten].except('Host', 'Connection', 'Version', 'X-Forwarded-For', 'X-Forwarded-Port', 'X-Forwarded-Proto')
   end
 
-  # extract SSO username
+  # extract SSO user id (username)
   def get_username
     env[settings.uid_attr]
   end
@@ -80,9 +81,9 @@ class Elasticsearch < Proxy
     return true if body == ""
     json = JSON.parse(body)
     if r_type == "_source"
-      return false if authorized?(json["username"])
+      return false if authorized?(json[settings.owner_attr])
     else
-      return false if authorized?(json["_source"]["username"])
+      return false if authorized?(json["_source"][settings.owner_attr])
     end
     true
   end
@@ -177,9 +178,9 @@ class Elasticsearch < Proxy
     return {} if body == ""
     json = JSON.parse(body)
     if json["query"].has_key?("bool")
-      json["query"]["bool"]["filter"] << {"terms": {"username": [get_username]}}
+      json["query"]["bool"]["filter"] << {"terms": {"#{settings.owner_attr}": [get_username]}}
     else
-      json = {"query": {"bool": {"must": json["query"], "filter": {"terms": {"username": [get_username]}} } } }
+      json = {"query": {"bool": {"must": json["query"], "filter": {"terms": {"#{settings.owner_attr}": [get_username]}} } } }.merge(json.except("query"))
     end
     json
   end
