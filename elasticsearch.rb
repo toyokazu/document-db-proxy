@@ -140,14 +140,15 @@ class Elasticsearch < Proxy
   end
 
   ## Get API
+  ## Currently, Get API response is not compressed
   get /\/([^\/]*)\/(_doc|_source)\/(\w+)/ do |index, req_type, id|
     begin
       logger.debug "Index/Get API, request.path: #{request.path}, index: #{index}, req_type: #{req_type}, id: #{id}"
-      response = HTTParty.get(settings.uri + request.path, query: get_params, headers: get_headers, body: get_body)
+      response = HTTParty.get(settings.uri + request.path, query: get_params, headers: get_headers.except('Accept-Encoding'), body: get_body)
       if should_be_denied?(response.body, req_type)
         return 403
       end
-      [response.code, response.headers, response.body]
+      [response.code, response.headers.except("content-length"), response.body]
     rescue StandardError => e
       error_handler(e)
     end
