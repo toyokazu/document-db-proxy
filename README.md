@@ -55,15 +55,15 @@ curl -d @running-data.json -H "Content-Type: application/json" -XPUT http://loca
 vi running-data-sample.json
 ```
 ```
-{ "index": {}  }
+{ "index": {"_id": "john01"}  }
 { "username": "john", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 00:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "ken01"}  }
 { "username": "ken", "location": { "lat": "38.8912704", "lon": "-77.0282541" }, "heart_rate": "60", "timestamp": "2020-04-21 01:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "mary01"}  }
 { "username": "mary", "location": { "lat": "38.8896123", "lon": "-77.0534359" }, "heart_rate": "60", "timestamp": "2020-04-22 02:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "alice01"}  }
 { "username": "alice", "location": { "lat": "38.8976763", "lon": "-77.0385396" }, "heart_rate": "60", "timestamp": "2020-04-23 03:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "bob01"}  }
 { "username": "bob", "location": { "lat": "38.8881112", "lon": "-77.0308824" }, "heart_rate": "60", "timestamp": "2020-04-24 04:00:00.000-0400" }
 ```
 
@@ -87,11 +87,11 @@ curl -d @teams.json -H "Content-Type: application/json" -XPUT http://localhost:9
 vi teams-data-sample.json
 ```
 ```
-{ "index": {}  }
+{ "index": {"_id": "team1"}  }
 { "teamname": "team1", "members": ["john", "mary"], "timestamp": "2020-04-20 00:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "team2"}  }
 { "teamname": "team2", "members": ["ken", "bob"], "timestamp": "2020-04-21 01:00:00.000-0400" }
-{ "index": {}  }
+{ "index": {"_id": "team3"}  }
 { "teamname": "team3", "members": ["alice", "john"], "timestamp": "2020-04-22 02:00:00.000-0400" }
 ```
 ```
