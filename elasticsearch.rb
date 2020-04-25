@@ -175,15 +175,27 @@ class Elasticsearch < Proxy
 
   # Search API
   # additional condition for filtering denied documents
-  def add_condition(body)
-    return {} if body == ""
-    json = JSON.parse(body)
+  def add_filter(json, filter)
     if json["query"].has_key?("bool")
-      json["query"]["bool"]["filter"] << {"terms": {"#{settings.owner_attr}": [get_username]}}
+      json["query"]["bool"]["filter"]
+      if json["query"]["bool"]["filter"].nil?
+        json["query"]["bool"]["filter"] = filter 
+      elsif json["query"]["bool"]["filter"].is_a?(Array)
+        json["query"]["bool"]["filter"] << filter
+      else
+        json["query"]["bool"]["filter"] = [json["query"]["bool"]["filter"], filt
+er]
+      end
     else
-      json = {"query": {"bool": {"must": json["query"], "filter": {"terms": {"#{settings.owner_attr}": [get_username]}} } } }.merge(json.except("query"))
+      json = {"query": {"bool": {"must": json["query"], "filter": filter } } }.m
+erge(json.except("query"))
     end
     json
+  end
+
+  def add_condition(body)
+    return {} if body == ""
+    add_filter(JSON.parse(body), {"terms": {"#{settings.owner_attr}": [get_username]}})
   end
 
   # Search API (GET)

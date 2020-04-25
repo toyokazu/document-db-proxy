@@ -45,7 +45,7 @@ vi running-data.json
       "username": { "type": "keyword" },
       "location": { "type": "geo_point" },
       "heart_rate": { "type": "integer" },
-      "timestamp": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis" },
+      "timestamp": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss.SSSZ" }
     }
   }
 }
@@ -56,15 +56,15 @@ vi running-data-sample.json
 ```
 ```
 { "index": {}  }
-{ "username": "john", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 00:00:00.000" }
+{ "username": "john", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 00:00:00.000-0400" }
 { "index": {}  }
-{ "username": "ken", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 01:00:00.000" }
+{ "username": "ken", "location": { "lat": "38.8912704", "lon": "-77.0282541" }, "heart_rate": "60", "timestamp": "2020-04-21 01:00:00.000-0400" }
 { "index": {}  }
-{ "username": "mary", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 02:00:00.000" }
+{ "username": "mary", "location": { "lat": "38.8896123", "lon": "-77.0534359" }, "heart_rate": "60", "timestamp": "2020-04-22 02:00:00.000-0400" }
 { "index": {}  }
-{ "username": "alice", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 03:00:00.000" }
+{ "username": "alice", "location": { "lat": "38.8976763", "lon": "-77.0385396" }, "heart_rate": "60", "timestamp": "2020-04-23 03:00:00.000-0400" }
 { "index": {}  }
-{ "username": "bob", "location": { "lat": "38.8976763", "lon": "-77.0387238" }, "heart_rate": "60", "timestamp": "2020-04-20 04:00:00.000" }
+{ "username": "bob", "location": { "lat": "38.8881112", "lon": "-77.0308824" }, "heart_rate": "60", "timestamp": "2020-04-24 04:00:00.000-0400" }
 ```
 
 ```
@@ -77,7 +77,7 @@ vi teams.json
     "properties": {
       "teamname": { "type": "keyword" },
       "members": { "type": "keyword" },
-      "timestamp": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd||epoch_millis" },
+      "timestamp": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss.SSSZ" }
     }
   }
 }
@@ -88,11 +88,11 @@ vi teams-data-sample.json
 ```
 ```
 { "index": {}  }
-{ "teamname": "team1", "members": ["john", "mary"], "timestamp": "2020-04-20 00:00:00.000" }
+{ "teamname": "team1", "members": ["john", "mary"], "timestamp": "2020-04-20 00:00:00.000-0400" }
 { "index": {}  }
-{ "teamname": "team2", "members": ["ken", "bob"], "timestamp": "2020-04-20 01:00:00.000" }
+{ "teamname": "team2", "members": ["ken", "bob"], "timestamp": "2020-04-21 01:00:00.000-0400" }
 { "index": {}  }
-{ "teamname": "team3", "members": ["alice", "john"], "timestamp": "2020-04-20 02:00:00.000" }
+{ "teamname": "team3", "members": ["alice", "john"], "timestamp": "2020-04-22 02:00:00.000-0400" }
 ```
 ```
 curl --data-binary @teams-data-sample.json -H "Content-Type: application/x-ndjson" -XPOST http://localhost:9200/teams/_bulk?pretty
