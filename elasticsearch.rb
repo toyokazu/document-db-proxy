@@ -183,12 +183,10 @@ class Elasticsearch < Proxy
       elsif json["query"]["bool"]["filter"].is_a?(Array)
         json["query"]["bool"]["filter"] << filter
       else
-        json["query"]["bool"]["filter"] = [json["query"]["bool"]["filter"], filt
-er]
+        json["query"]["bool"]["filter"] = [json["query"]["bool"]["filter"], filter]
       end
     else
-      json = {"query": {"bool": {"must": json["query"], "filter": filter } } }.m
-erge(json.except("query"))
+      json = {"query": {"bool": {"must": json["query"], "filter": filter } } }.merge(json.except("query"))
     end
     json
   end

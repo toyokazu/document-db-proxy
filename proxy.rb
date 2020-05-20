@@ -13,7 +13,7 @@ class Proxy < Sinatra::Base
     file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
     file.sync = true
     @logger = Logger.new(file)
-    @logger.level = Logger::DEBUG if development?
+    @logger.level = Logger::DEBUG if settings.development?
     @logger
   end
 end
