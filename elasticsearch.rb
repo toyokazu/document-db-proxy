@@ -38,6 +38,10 @@ class Elasticsearch < Proxy
   error 403 do
     'Access forbidden'
   end
+  
+  error 404 do
+    'Not Found'
+  end
 
   # error handler
   def error_handler(e)
@@ -97,6 +101,8 @@ class Elasticsearch < Proxy
         return 403
       end
       response1 = HTTParty.get(settings.uri + "/#{index}/_doc/#{id}", query: get_params, headers: get_headers.except('Accept-Encoding'), body: get_body)
+      logger.debug "Response code: #{response1.code}\nResponse body:\n#{response1.body}"
+      return 404 if response1.code == 404
       if should_be_denied?(response1.body, "_doc")
         return 403
       end
@@ -129,6 +135,8 @@ class Elasticsearch < Proxy
       logger.debug "Document/Delete API, request.path: #{request.path}, index: #{index}, id: #{id}"
 
       response1 = HTTParty.get(settings.uri + "/#{index}/_doc/#{id}", query: get_params, headers: get_headers.except('Accept-Encoding'), body: get_body)
+      logger.debug "Response code: #{response1.code}\nResponse body:\n#{response1.body}"
+      return 404 if response1.code == 404
       if should_be_denied?(response1.body, "_doc")
         return 403
       end
@@ -145,6 +153,8 @@ class Elasticsearch < Proxy
     begin
       logger.debug "Index/Get API, request.path: #{request.path}, index: #{index}, req_type: #{req_type}, id: #{id}"
       response = HTTParty.get(settings.uri + request.path, query: get_params, headers: get_headers.except('Accept-Encoding'), body: get_body)
+      logger.debug "Response code: #{response.code}\nResponse body:\n#{response.body}"
+      return 404 if response.code == 404
       if should_be_denied?(response.body, req_type)
         return 403
       end
@@ -163,6 +173,8 @@ class Elasticsearch < Proxy
         return 403
       end
       response1 = HTTParty.get(settings.uri + "/#{index}/_doc/#{id}", query: get_params, headers: get_headers.except('Accept-Encoding'), body: get_body)
+      logger.debug "Response code: #{response1.code}\nResponse body:\n#{response1.body}"
+      return 404 if response1.code == 404
       if should_be_denied?(response1.body, "_doc")
         return 403
       end
